@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>基本API</h1>
+<h3>require会定义三个变量：define,require,requirejs，其中require === requirejs，一般使用require更简短
+</h3>
+<ol>
+<li>define 从名字就可以看出这个api是用来定义一个模块</li>
+<li>require 加载依赖模块，并执行加载完后的回调函数</li>
+</ol>
+</body>
+<script src="lib/require_all.js"></script>
+<script type="text/javascript">
+
+//  如果是加载非本地js模块文件：
+//  则不能使用这种方式加载
+//  相当于先给这个依赖取个名字，比如'jquery'、'ng'、'layer'
+    //然后就可以在依赖数组中使用这个名字作为代替
+    require.config({
+        paths : {
+            "jquery" : ["http://libs.baidu.com/jquery/2.0.3/jquery"]
+        //    此处可以写为：
+            //"jquery" : ["http://libs.baidu.com/jquery/2.0.3/jquery", "lib/jquery"]
+        //    作用是如果前者加载失败，则加载后面的lib中的jq
+        }
+    });
+    //这边涉及了require.config，是用来配置模块加载位置
+    //当然这边不仅可以配置网络上的文件地址
+    //同样也可以配置本地模块文件
+    
+    //此处使用了config中定义的jquery
+    require(["jquery","js/03a"],function($){
+        $("h1").css({
+            backgroundColor:"yellowgreen",
+            textDecoration:"underline"
+        })
+    });
+    
+    
+    
+    
+    
+    
+</script>
+</html>

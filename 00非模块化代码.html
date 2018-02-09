@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script >
+        //这边的js代码会阻塞dom的渲染，一上来你会发现页面空白。
+        alert(123)
+    </script>
+    <h1>hello js</h1>
+</body>
+<script>
+    //假如这是代码块a
+    function a() {
+        console.log(123)
+    }
+</script>
+<script>
+    //假如这是代码块b
+    var a = 1
+    a++
+    console.log(a) //a
+    // a()//此处报错：a is not a function
+    //两个代码块之间的a变量产生覆盖现象，
+    //导致前者a函数不可用
+    //变量污染现象
+    
+//    把代码改一改：
+    function b() {
+        console.log(123)
+    }
+    (function () {
+        var b = 1
+        b++
+        console.log(b) //2
+    })()
+    b() //123
+    //此处使用了匿名函数立即执行的方式，使得匿名函数内的b变成局部变量，
+    //不会影响到全局变量
+    
+//    有时候还会遇到这种情况：
+//    某个位置写了个求2个数的和的函数
+    function sum(a, b){
+        console.log(a+b)
+        return a+b
+    }
+//    在其他位置可能需要写个求3个数的和的函数
+//    这个时候函数名可能不大好取
+    function sum1(a, b, c){
+        console.log(a+b+c)
+        return a+b+c
+    }
+    function sum2(a, b, c, d){
+        console.log(a+b+c+d)
+        return a+b+c+d
+    }
+//    ....
+//    用上面的方法就可以解决这个问题
+    ;(function () {
+        var x = 1,y = 2 ;
+        function sum(a, b) {
+            console.log(a + b)
+            return a + b
+        }
+        sum(x, y)
+    })();
+    (function () {
+        var x = 1,y = 2, z = 3 ;
+        function sum(a, b, c) {
+            console.log(a + b + c)
+            return a + b + c
+        }
+        sum(x, y, z)
+    })();
+//    在不同的代码块中独立作用，互不影响
+
+    
+    //流水账式的代码导致的问题越来越多
+    //代码越来越需要模块化
+    //越复杂的代码越需要模块化
+    
+</script>
+</html>

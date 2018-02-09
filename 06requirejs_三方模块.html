@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script src="lib/require_all.js"></script>
+<script>
+    // 通过require加载的模块一般都需要符合 AMD 规范,
+    // 即:使用define来申明模块，但是部分时候需要加载非AMD规范的js，
+    // 这时候就需要用到另一个功能：shim
+    // shim解释起来也比较难理解，shim直接翻译为"垫"，
+    // 其实也是有这层意思的，目前主要用在两个地方
+
+    // 1. 非AMD模块输出
+    //将非标准的AMD模块"垫"成可用的模块，例如：在老版本的jquery中，
+    // 是没有继承AMD规范的，所以不能直接require["jquery"],这时候就需要shim，
+    // 比如我要是用underscore类库，但是他并没有实现AMD规范，
+    // 那我们可以这样配置:
+    require.config({
+        shim: {
+            "underscore": {
+                exports: "_";
+    }
+    }
+    })
+    //这样配置后，我们就可以在其他模块中引用underscore模块：
+
+    require(["underscore"], function (_) {
+        _.each([1, 2, 3], alert);
+    })
+
+    //2.插件形式的非AMD模块，我们经常会用到jquery插件，
+    // 而且这些插件基本都不符合AMD规范，比如jquery.form插件，
+    // 这时候就需要将form插件"垫"到jquery中：
+    require.config({
+        shim: {
+            "underscore": {
+                exports: "_"
+            },
+            "jquery.form":{
+                deps : ["jquery"]
+            }
+        }
+    })
+    //可以简写为：
+    require.config({
+        shim: {
+            "underscore" : {
+                exports : "_"
+            },
+            "jquery.form" : ["jquery"]
+         }
+    })
+    
+    //这样配置之后我们就可以使用加载插件后的jquery了
+    require(["jquery", "jquery.form"], function($){
+        $(function(){
+            $("#form").ajaxSubmit({
+            //    code here
+            });
+        })
+    })
+    
+//    另外，define函数也可以添加依赖：（AMD形式）
+    //依赖前置
+    define(['jquery','layui','other'],function ($, lay, o) {
+    //    ....
+    //    输出的模块可以是一个函数，也可以是一个对象
+    })
+
+//    如果是用 CMD 规范：
+    define(function(require, exports, module) {
+            //就近引入
+            var a = require('a'),
+                b = require('b');
+
+            //Return the module value
+            return function () {};
+        }
+    );
+
+//    基本用途用法就这些
+//    其他可以参考官方API文档
+//    http://requirejs.org/
+
+</script>
+</html>

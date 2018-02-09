@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>基本API</h1>
+<h3>require会定义三个变量：define,require,requirejs，其中require === requirejs，一般使用require更简短
+</h3>
+<ol>
+<li>define 从名字就可以看出这个api是用来定义一个模块</li>
+<li>require 加载依赖模块，并执行加载完后的回调函数</li>
+</ol>
+</body>
+<script src="lib/require_all.js"></script>
+<script type="text/javascript">
+    // -> js/03a.js中定义了一个模块
+    
+    // 加载03a, 加载完毕会执行回调函数
+    // 第一个参数必须是数组，可以放多个模块名
+    // js后缀名省略。
+    //可以给回调加入参数，代替原模块
+    require(['js/03a'], function (x) {
+        console.log(x.name)//03a
+        x.fn()//im fun1 in module 03a.js
+        
+    });
+
+    require(['js/03a','js/03b'], function (x, y) {
+        console.log(x.name)//03a
+        x.fn()//im fun1 in module 03a.js
+        
+        console.log(y.type)
+        y.date()
+    });
+
+
+    
+    
+</script>
+</html>
